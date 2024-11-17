@@ -151,6 +151,7 @@ void loop()
         Serial.print(curr_pitch_angle);
         Serial.print(", ");
         Serial.println(curr_roll_angle);
+        Serial.print(", ");
         Serial.print(noisy_curr_pitch_angle);
         Serial.print(", ");
         Serial.println(noisy_curr_roll_angle);
