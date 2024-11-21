@@ -43,6 +43,8 @@ float delta_t;
 unsigned long prev_time;
 unsigned long print_prev_time;
 
+float EPSILON = 1e-6;
+
 void setup()
 {
     Serial.begin(comm_data_rate);
@@ -133,9 +135,9 @@ void loop()
 
     // process the roll and pitch angle for configurating tilting through IMU sensor
     acc_roll_angle = atan2(acc_y/g, acc_z/g) * 180/PI;
-    noisy_acc_roll_angle = atan2(noisy_acc_y/g, noisy_acc_z/g) * 180/PI; 
+    noisy_acc_roll_angle = atan2(noisy_acc_y/g, noisy_acc_z/g + EPSILON) * 180/PI; 
     acc_pitch_angle = atan2(acc_x/g, acc_z/g) * 180/PI;
-    noisy_acc_pitch_angle = atan2(noisy_acc_x/g, noisy_acc_z/g) * 180 * PI; 
+    noisy_acc_pitch_angle = atan2(noisy_acc_x/g, noisy_acc_z/g + EPSILON) * 180 / PI; 
     gyr_roll_angle = gyr_x * delta_t;
     noisy_gyr_roll_angle = noisy_gyr_x * delta_t; 
     gyr_pitch_angle = gyr_y * delta_t;
@@ -176,6 +178,13 @@ float gaussianNoise(float mean, float stddev) {
     float FLOAT_MAX = 32767.0;
     float uni_distb_1 = random(0, INT_MAX) / FLOAT_MAX;
     float uni_distb_2 = random(0, INT_MAX) / FLOAT_MAX;
+
+    if (uni_distb_1 < 0) {
+      uni_distb_1 = EPSILON; 
+    }
+    if (uni_distb_2 < 0) {
+      uni_distb_2 = EPSILON; 
+    }
 
     // Box-Muller transform for independent standard normal distribution generation
     float box_mull_coeff = sqrt(-2.0 * log(uni_distb_1)) * cos(2.0 * PI * uni_distb_2);
