@@ -138,7 +138,7 @@ void loop()
     acc_roll_angle = atan2(acc_y/g, acc_z/g) * 180/PI;
     noisy_acc_roll_angle = atan2(noisy_acc_y/g, noisy_acc_z/g + EPSILON) * 180/PI; 
     acc_pitch_angle = atan2(acc_x/g, acc_z/g) * 180/PI;
-    noisy_acc_pitch_angle = atan2(noisy_acc_x/g, noisy_acc_z/g + EPSILON) * 180 / PI; 
+    noisy_acc_pitch_angle = atan2(noisy_acc_x/g, noisy_acc_z/g + EPSILON) * 180/PI; 
     gyr_roll_angle = gyr_x * delta_t;
     noisy_gyr_roll_angle = noisy_gyr_x * delta_t; 
     gyr_pitch_angle = gyr_y * delta_t;
