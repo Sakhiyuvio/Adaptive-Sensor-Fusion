@@ -202,7 +202,7 @@ float gaussianNoise(float mean, float stddev) {
         mag_squared = scale_1 * scale_1 + scale_2 * scale_2;
     } while (mag_squared >= 1 || mag_squared == 0);
     
-    mag_squared = sqrt(-2.0 * log(s) / s);
+    mag_squared = sqrt(-2.0 * log(mag_squared) / mag_squared);
     
     // get spare value for next iteration 
     spare = random_2 * mag_squared;
