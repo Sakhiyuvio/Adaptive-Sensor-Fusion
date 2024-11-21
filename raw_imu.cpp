@@ -182,7 +182,7 @@ float gaussianNoise(float mean, float stddev) {
   // static variable, box muller transform 
     static bool haveSpare = false;
     static float spare;
-    float box_muller_coeff
+    float box_muller_coeff;
     
     // new value to return from prev noise calcullation 
     if (haveSpare) {
