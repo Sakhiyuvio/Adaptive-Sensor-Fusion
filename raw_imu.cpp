@@ -199,7 +199,7 @@ float gaussianNoise(float mean, float stddev) {
         random_2 = random(0, INT_MAX) / (float)INT_MAX;
         scale_1 = 2 * random_1 - 1;
         scale_2 = 2 * random_2 - 1;
-        mag_squared = v1 * v1 + v2 * v2;
+        mag_squared = scale_1 * scale_1 + scale_2 * scale_2;
     } while (mag_squared >= 1 || mag_squared == 0);
     
     mag_squared = sqrt(-2.0 * log(s) / s);
