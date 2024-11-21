@@ -121,8 +121,9 @@ void loop()
     gyr_y = gyro.gyro.y;
 
     // get noisy sensor data for adaptive processing stage
+    // hyper parameters
     float mean = 0.0;
-    float stddev = 0.1;
+    float stddev = 0.5; 
     noisy_acc_x = acc_x + gaussianNoise(mean, stddev);
     noisy_acc_y = acc_y + gaussianNoise(mean, stddev);
     noisy_acc_z = acc_z + gaussianNoise(mean, stddev); 
@@ -177,27 +178,36 @@ uint8_t readRegister(uint8_t reg) {
 
 // noise gen
 float gaussianNoise(float mean, float stddev) {
+
+  // static variable, box muller transform 
     static bool haveSpare = false;
     static float spare;
+    float box_muller_coeff
     
+    // new value to return from prev noise calcullation 
     if (haveSpare) {
         haveSpare = false;
-        return spare * stddev + mean;
+        box_muller_coeff = spare*stddev + mean;
+        return box_muller_coeff;
     }
     
-    float u1, u2, v1, v2, s;
+    float random_1, random_2, scale_1, scale_2, mag_squared;
+
+    // random number generator, follows uniform distrib, [-1, 1]
     do {
-        u1 = random(0, INT_MAX) / (float)INT_MAX;
-        u2 = random(0, INT_MAX) / (float)INT_MAX;
-        v1 = 2 * u1 - 1;
-        v2 = 2 * u2 - 1;
-        s = v1 * v1 + v2 * v2;
-    } while (s >= 1 || s == 0);
+        random_1 = random(0, INT_MAX) / (float)INT_MAX;
+        random_2 = random(0, INT_MAX) / (float)INT_MAX;
+        scale_1 = 2 * random_1 - 1;
+        scale_2 = 2 * random_2 - 1;
+        mag_squared = v1 * v1 + v2 * v2;
+    } while (mag_squared >= 1 || mag_squared == 0);
     
-    s = sqrt(-2.0 * log(s) / s);
+    mag_squared = sqrt(-2.0 * log(s) / s);
     
-    spare = v2 * s;
+    // get spare value for next iteration 
+    spare = random_2 * mag_squared;
     haveSpare = true;
     
-    return v1 * s * stddev + mean;
+    box_muller_coeff = random_1 * mag_squared * stddev + mean; 
+    return box_muller_coeff;
 }
