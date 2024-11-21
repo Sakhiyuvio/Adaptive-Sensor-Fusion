@@ -83,11 +83,11 @@ void setup()
     acc_z = 0.0;
     noisy_acc_x = 0.0;
     noisy_acc_y = 0.0;
-    noisy_acc_z = 0.0 
+    noisy_acc_z = 0.0; 
     gyr_x = 0.0;
     gyr_y = 0.0;
     noisy_gyr_x = 0.0;
-    noisy_gyr_y = 0.0 
+    noisy_gyr_y = 0.0; 
     curr_pitch_angle = 0.0;
     noisy_curr_pitch_angle = 0.0;
     curr_roll_angle = 0.0;
