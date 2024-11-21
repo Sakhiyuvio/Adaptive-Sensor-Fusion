@@ -146,14 +146,17 @@ void loop()
     // complementary filter imp
     curr_roll_angle = (curr_roll_angle + gyr_roll_angle) * trust_factor + acc_roll_angle*trust_factor_complement;
     curr_pitch_angle = (curr_pitch_angle - gyr_pitch_angle) * trust_factor + acc_pitch_angle*trust_factor_complement;
-    noisy_curr_roll_angle = (noisy_curr_roll_angle + noisy_gyr_roll_angle) * trust_factor + noisy_acc_roll_angle*trust_factor_complement;
-    noisy_curr_pitch_angle = (noisy_curr_pitch_angle - noisy_gyr_pitch_angle) * trust_factor + noisy_acc_pitch_angle*trust_factor_complement;
+    if (isfinite(noisy_curr_roll_angle) && isfinite(noisy_curr_pitch_angle)) {
+      noisy_curr_roll_angle = (noisy_curr_roll_angle + noisy_gyr_roll_angle) * trust_factor + noisy_acc_roll_angle*trust_factor_complement;
+      noisy_curr_pitch_angle = (noisy_curr_pitch_angle - noisy_gyr_pitch_angle) * trust_factor + noisy_acc_pitch_angle*trust_factor_complement;
+    }
 
     if (millis() - print_prev_time > 1000) {
+        Serial.println("Actual angles:");
         Serial.print(curr_pitch_angle);
         Serial.print(", ");
         Serial.println(curr_roll_angle);
-        Serial.print(", ");
+        Serial.println("Noisy angles:");
         Serial.print(noisy_curr_pitch_angle);
         Serial.print(", ");
         Serial.println(noisy_curr_roll_angle);
@@ -174,20 +177,27 @@ uint8_t readRegister(uint8_t reg) {
 
 // noise gen
 float gaussianNoise(float mean, float stddev) {
-    float gaussian_noise; 
-    float FLOAT_MAX = 32767.0;
-    float uni_distb_1 = random(0, INT_MAX) / FLOAT_MAX;
-    float uni_distb_2 = random(0, INT_MAX) / FLOAT_MAX;
-
-    if (uni_distb_1 < 0) {
-      uni_distb_1 = EPSILON; 
+    static bool haveSpare = false;
+    static float spare;
+    
+    if (haveSpare) {
+        haveSpare = false;
+        return spare * stddev + mean;
     }
-    if (uni_distb_2 < 0) {
-      uni_distb_2 = EPSILON; 
-    }
-
-    // Box-Muller transform for independent standard normal distribution generation
-    float box_mull_coeff = sqrt(-2.0 * log(uni_distb_1)) * cos(2.0 * PI * uni_distb_2);
-    gaussian_noise = mean + stddev*box_mull_coeff;
-    return gaussian_noise;
+    
+    float u1, u2, v1, v2, s;
+    do {
+        u1 = random(0, INT_MAX) / (float)INT_MAX;
+        u2 = random(0, INT_MAX) / (float)INT_MAX;
+        v1 = 2 * u1 - 1;
+        v2 = 2 * u2 - 1;
+        s = v1 * v1 + v2 * v2;
+    } while (s >= 1 || s == 0);
+    
+    s = sqrt(-2.0 * log(s) / s);
+    
+    spare = v2 * s;
+    haveSpare = true;
+    
+    return v1 * s * stddev + mean;
 }
