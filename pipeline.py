@@ -4,7 +4,7 @@ from matplotlib.animation import FuncAnimation
 import time
 import numpy as np
 
-# Open serial port (replace with your actual COM port)
+# Open serial port 
 ser = serial.Serial('COM7', 115200)  
 
 # Create figure and axes for the graphs
