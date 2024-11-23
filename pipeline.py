@@ -5,7 +5,7 @@ import time
 import numpy as np
 
 # Open serial port (replace with your actual COM port)
-ser = serial.Serial('COM7', 115200)  # Change COM11 to your actual port
+ser = serial.Serial('COM7', 115200)  
 
 # Create figure and axes for the graphs
 fig, ((ax1, ax2, ax5), (ax3, ax4, ax6)) = plt.subplots(2, 3, sharex=True, figsize=(12, 8))
