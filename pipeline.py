@@ -113,33 +113,36 @@ def animate(i):
     # Plot pitch vs time
     ax1.plot(x_vals, pitch_vals, label="Pitch", color="b")
     ax1.set_title("Pitch vs Time")
-    ax1.set_ylabel("Pitch (degrees)")
+    ax1.set_xlabel("Time (seconds)")
+    ax1.set_ylabel("Pitch Angle (degrees)")
     ax1.legend(loc="upper right")
 
     # Plot noisy pitch vs time
     ax2.plot(x_vals, noisy_pitch_vals, label="Noisy Pitch", color="g")
     ax2.set_title("Noisy Pitch vs Time")
-    ax2.set_ylabel("Noisy Pitch (degrees)")
+    ax2.set_xlabel("Time (seconds)")
+    ax2.set_ylabel("Noisy Pitch Angle(degrees)")
     ax2.legend(loc="upper right")
 
     # Plot roll vs time
     ax3.plot(x_vals, roll_vals, label="Roll", color="r")
     ax3.set_title("Roll vs Time")
     ax3.set_xlabel("Time (seconds)")
-    ax3.set_ylabel("Roll (degrees)")
+    ax3.set_ylabel("Roll Angle (degrees)")
     ax3.legend(loc="upper right")
 
     # Plot noisy roll vs time
     ax4.plot(x_vals, noisy_roll_vals, label="Noisy Roll", color="orange")
     ax4.set_title("Noisy Roll vs Time")
     ax4.set_xlabel("Time (seconds)")
-    ax4.set_ylabel("Noisy Roll (degrees)")
+    ax4.set_ylabel("Noisy Roll Angle (degrees)")
     ax4.legend(loc="upper right")
 
     # Plot filtered pitch vs time
     ax5.plot(x_vals, filtered_pitch_vals, label="Filtered Pitch", color="purple")
     ax5.set_title("Filtered Pitch vs Time")
-    ax5.set_ylabel("Filtered Pitch (degrees)")
+    ax5.set_xlabel("Time (seconds)")
+    ax5.set_ylabel("Filtered Pitch Angle (degrees)")
     ax5.legend(loc="upper right")
     # ax5.set_ylim(pitch_min, pitch_max)
 
@@ -147,7 +150,7 @@ def animate(i):
     ax6.plot(x_vals, filtered_roll_vals, label="Filtered Roll", color="cyan")
     ax6.set_title("Filtered Roll vs Time")
     ax6.set_xlabel("Time (seconds)")
-    ax6.set_ylabel("Filtered Roll (degrees)")
+    ax6.set_ylabel("Filtered Roll Angle (degrees)")
     ax6.legend(loc="upper right")
     ax6.set_ylim(roll_min, roll_max)
 
@@ -157,7 +160,7 @@ def main():
 
     # Display the plot
     plt.tight_layout()
-    # plt.subplots_adjust(hspace=0.5, wspace=0.5)  # Adjust space between subplots
+    # plt.subplots_adjust(hspace=0.5, wspace=0.5)  # adjust space between titles of each subplots
     plt.show()
 
 if __name__ == "__main__":
